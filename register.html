@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Register</title>
+
+    <!-- Custom styles for this template-->
+    <link href="css/styles.css" rel="stylesheet" />
+
+    <script src="js/scripts.js"></script>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const emailInput = document.querySelector('#email');
+        const feedbackRequired = document.querySelector('.invalid-feedback[data-sb-feedback="email"]');
+        const feedbackInvalidDomain = document.querySelector('.invalid-feedback[data-sb-feedback="emaildomain"]');
+        const feedbackSuccess = document.querySelector('.feedback[data-sb-feedback="emailpass"]');
+
+        // Function to validate the email
+        function validateEmail() {
+        const emailValue = emailInput.value;
+        const domainRegex = /^(.+)@(outlook\.com|gmail\.com|hotmail\.com|yahoo\.com|mail\.apu\.edu\.my)$/;
+
+        // Hide all feedback messages
+        feedbackRequired.style.display = 'none';
+        feedbackInvalidDomain.style.display = 'none';
+        feedbackSuccess.style.display = 'none';
+
+        if (!emailValue) {
+            // If the email field is empty
+            feedbackRequired.style.display = 'block';
+            feedbackRequired.textContent = 'Required';
+        } else if (!domainRegex.test(emailValue)) {
+            // If the email domain is not one of the specified domains
+            feedbackInvalidDomain.style.display = 'block';
+            feedbackInvalidDomain.textContent = 'Invalid, Please use common email (Outlook, Gmail, Yahoo, APU Student Email)';
+        } else {
+            // If the email is valid
+            feedbackSuccess.style.display = 'block';
+            feedbackSuccess.textContent = 'Reach Requirement!';
+        }
+        }
+
+        // Add event listener for email input changes
+        emailInput.addEventListener('input', validateEmail);
+    });
+    </script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const dobInput = document.querySelector('[name="dob"]');
+      const today = new Date();
+      const maxDate = today.toISOString().split('T')[0];
+      dobInput.setAttribute('max', maxDate);
+  
+      const minDate = new Date(today.setFullYear(today.getFullYear() - 100)).toISOString().split('T')[0];
+      dobInput.setAttribute('min', minDate);
+    });
+  </script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const phoneNumberInput = document.querySelector('[name="phoneNumber"]');
+  
+      // Autofill "60" when the input is focused
+      phoneNumberInput.addEventListener('focus', function() {
+        if (phoneNumberInput.value === '') {
+          phoneNumberInput.value = '60';
+        }
+      });
+  
+      // Clear the input if "60" is the only content and the input is blurred
+      phoneNumberInput.addEventListener('blur', function() {
+        if (phoneNumberInput.value === '60') {
+          phoneNumberInput.value = '';
+        }
+      });
+  
+      // Allow only numbers to be entered
+      phoneNumberInput.addEventListener('input', function() {
+        phoneNumberInput.value = phoneNumberInput.value.replace(/[^0-9]/g, '');
+      });
+    });
+  </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const checkbox = document.getElementById('membershipCheck');
+      const textInput = document.querySelector('.form-group input[type="text"][placeholder="Enter your token, Request from IT department"]');
+  
+      // Function to toggle the disabled state and required attribute of the text input
+      function toggleTextInput() {
+        if (checkbox.checked) {
+          textInput.disabled = false;
+          textInput.required = true;
+        } else {
+          textInput.disabled = true;
+          textInput.required = false;
+          textInput.value = ''; // Clear the input if the checkbox is unchecked
+        }
+      }
+  
+      // Add event listener for checkbox changes
+      checkbox.addEventListener('change', toggleTextInput);
+  
+      // Initialize the text input state based on the checkbox initial state
+      toggleTextInput();
+    });
+  </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const membershipCheck = document.getElementById('membershipCheck');
+        const tokenInput = document.getElementById('tokenInput');
+        const registerButton = document.getElementById('registerButton');
+        const requiredFields = document.querySelectorAll('[required]');
+        
+        // Function to check if all required fields are filled
+        function checkRequiredFields() {
+            let allFieldsFilled = true;
+            requiredFields.forEach(function(field) {
+                if (!field.value.trim()) {
+                    allFieldsFilled = false;
+                }
+            });
+            return allFieldsFilled;
+        }
+        
+        // Initially disable the register button
+        registerButton.disabled = true;
+        
+        // Function to enable or disable register button based on required fields and checkbox status
+        function toggleRegisterButton() {
+            if (membershipCheck.checked) {
+                if (tokenInput.value.trim()) {
+                    registerButton.disabled = !checkRequiredFields();
+                } else {
+                    registerButton.disabled = true;
+                }
+            } else {
+                registerButton.disabled = !checkRequiredFields();
+            }
+        }
+        
+        // Add event listener to the checkbox
+        membershipCheck.addEventListener('change', function() {
+            toggleRegisterButton();
+            if (membershipCheck.checked) {
+                tokenInput.removeAttribute('disabled');
+                tokenInput.setAttribute('required', true);
+            } else {
+                tokenInput.setAttribute('disabled', true);
+                tokenInput.removeAttribute('required');
+            }
+        });
+        
+        // Add event listener to required fields to enable/disable register button
+        requiredFields.forEach(function(field) {
+            field.addEventListener('input', toggleRegisterButton);
+        });
+    
+        // Add event listener to token input to enable/disable register button
+        tokenInput.addEventListener('input', toggleRegisterButton);
+    });
+    </script>
+
+
+<script>
+        // JavaScript code for password validation
+        // Check the Password is match or not
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordField = document.getElementById('password');
+            const repasswordField = document.getElementById('repassword');
+            const registerButton = document.getElementById('registerButton');
+            const passwordNomatchFeedback = document.querySelector('[data-sb-feedback="passwordnomatch"]');
+
+            // Function to check if passwords match
+            function passwordsMatch() {
+                return passwordField.value === repasswordField.value;
+            }
+
+            // Function to toggle register button and show/hide password match message
+            function toggleRegisterButton() {
+                if (passwordsMatch()) {
+                    registerButton.disabled = false;
+                    passwordNomatchFeedback.style.display = 'none'; // Hide the message
+                } else {
+                    registerButton.disabled = true;
+                    passwordNomatchFeedback.style.display = 'block'; // Show the message
+                }
+            }
+
+            // Add event listener to password fields to check if they match
+            passwordField.addEventListener('input', toggleRegisterButton);
+            repasswordField.addEventListener('input', toggleRegisterButton);
+        });
+
+        //Check the password format must meet requirements
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordField = document.getElementById('password');
+            const registerButton = document.getElementById('registerButton');
+            const feedbackMessages = document.querySelectorAll('[data-sb-feedback]');
+
+
+            // Function to toggle register button based on password format
+            function toggleRegisterButton() {
+                const password = passwordField.value;
+                const passwordFormatValid = checkPasswordFormat(password);
+
+                // Enable or disable the register button based on password format
+                registerButton.disabled = !passwordFormatValid;
+            }
+
+            // Add event listeners to password field to check format and toggle feedback messages
+            passwordField.addEventListener('input', function() {
+                toggleFeedbackMessages();
+                toggleRegisterButton();
+            });
+        });
+    </script>
+
+<script>
+    //Perfome back to the page where from
+function goBack() {
+  window.history.back();
+}
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const membershipCheck = document.getElementById('membershipCheck');
+        const tokenInput = document.getElementById('tokenInput');
+        const rolesInput = document.getElementById('rolesInput');
+        
+        // 监听复选框的变化
+        membershipCheck.addEventListener('change', function() {
+            if (this.checked) {
+                // 如果复选框被选中，将角色设置为 'staff' 并启用 token 输入框
+                rolesInput.value = 'staff';
+                tokenInput.disabled = false;
+            } else {
+                // 如果复选框未被选中，将角色设置为 'member' 并禁用 token 输入框
+                rolesInput.value = 'member';
+                tokenInput.disabled = true;
+            }
+        });
+    });
+    </script>
+
+
+</head>
+
+
+
+<body class="bg-gradient-primary">
+    <div class="container">
+        <div class="col-xl-12 col-lg-12 col-md-12"> <!--Use to difference screen width auto align -->
+            <div class="p-6">
+
+                <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">Create an account?</h1>
+                </div>
+                
+                <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
+                    <div class="col-lg-6">
+                        <form action="registration.php" method="post">
+
+
+                            <div class="form-group row">
+
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control form-control-user" data-sb-feedback="firstName" name="firstName"   required>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control form-control-user "name="lastName" required>
+                                </div>
+
+                            </div>
+
+                            <br>
+
+                            <div class="form-group">
+                                <label> Email</label>
+                                <input type="email" class="form-control form-control-user"  placeholder="name@example.com" name="email" required>
+                                <!--<input type="email" class="form-control form-control-user"  placeholder="name@example.com" name="email" id="email" required>
+                                <div class="invalid-feedback text-bg-danger" data-sb-feedback="email"></div>
+                                <div class="invalid-feedback text-bg-danger" data-sb-feedback="emaildomain"></div>
+                                <div class="feedback text-bg-success" data-sb-feedback="emailpass"></div>-->
+                            </div>
+
+                            <br>
+
+                            <div class="form-group">
+                                <label> Phone Number</label>
+                                <input type="tel" class="form-control form-control-user"  placeholder="+60123456789" name="phoneNumber" required>
+                            </div>
+
+                            <br>
+
+                            <div class="form-group">
+                                <label>Date of birth</label>
+                                <input type="date" class="form-control form-control-user"  name="dob" required >
+                            </div>
+
+                            <br>
+                            <div class="form-group ">
+                            <label>Gender</label><br>
+                                <div class="form-check form-check-inline" >
+                                    <input class="form-check-input" type="radio" name="gender" id="genderinlineRadio1" value="MALE" required>
+                                    <label class="form-check-label" for="genderinlineRadio1">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="genderinlineRadio2" value="FEMALE" required>
+                                    <label class="form-check-label" for="genderinlineRadio2">Female</label>
+                                </div>
+                            </div>
+
+                            <br>
+
+                            <div class="form-group row">
+                                <!-- Password input -->
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <label>Password</label>
+                                    <input type="password" class="form-control form-control-user" placeholder="Password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}" title="Must contain at least one number, one uppercase and one lowercase letter, and one special symbol. Minimum 8 characters." required>
+                                    <ul>
+                                        <li>At Least 1 Uppercase</li>
+                                        <li>At Least 1 Lowercase</li>
+                                        <li>At Least 1 Number</li>
+                                        <li>At Least 1 Special Symbol</li>
+                                        <li>Minimum 8 Character</li>
+                                    </ul>
+                                </div>
+                                <!-- Repeat password input -->
+                                <div class="col-sm-6">
+                                    <label>Repeat Password</label>
+                                    <input type="password" class="form-control form-control-user" placeholder="Repeat Password" name="repassword" id="repassword" required>
+                                    <div class="invalid-feedback text-bg-danger hidden" data-sb-feedback="passwordnomatch">Passwords do NOT match.</div>
+                                </div>
+
+                                
+                            </div>
+
+
+                            <br>
+                            
+                            <!--<form id="referralForm">-->
+                                <div class="form-group form-check">
+                                  <input type="checkbox" class="form-check-input" id="membershipCheck">
+                                  <label class="form-check-label" for="membershipCheck">I am member of MEDVault Staff</label>
+                                  <input type="hidden" id="rolesInput" name="roles" value="member">
+                                </div>
+                                <div class="form-group">
+                                  <input type="text" class="form-control" name="stafftoken"  placeholder="Enter your token, Request from IT department" id="tokenInput" disabled>
+                                </div>
+                            <!--</form>-->
+                            
+
+                            <br>
+                            <br>
+
+                            <!-- Button -->
+                            <br>
+                            <div class="d-grid">
+                                <input class="btn btn-primary btn-xl " type="submit" value="Register" action="registration.php" id="registerButton" disabled>
+                            </div>
+                            <br>
+                            <div class="d-grid">
+                                <!--<a href="index.html" class="btn btn-light btn-xl"> Back </a>-->
+                                <a href="#" class="btn btn-light btn-xl" onclick="goBack()">Back</a>
+                                
+                            </div>
+                        
+                        </form>
+
+                        <br>
+                        <hr><br>
+
+                        <div class="text-center">
+                            <a class="small" href="forgot-password.html">Forgot Password?</a><br>
+                            <a class="small" href="login.html">Already have an account? Login!</a>
+                        </div>
+
+                        <div>
+                            <a><br></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+
+
+
+</body>
+
+</html>
